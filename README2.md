@@ -13,20 +13,30 @@ Set up a Kubernetes cluster. You can use a cloud provider like AWS or Google Clo
 Create a Redis password and store it as a Kubernetes secret:
 lua
 Copy code
+
 kubectl create secret generic redis-password --from-literal=REDIS_PASSWORD=<password>
+
 Deploy Redis as a stateful set in Kubernetes, with persistent volumes:
 Copy code
+
 kubectl apply -f redis.yaml
+
 Build and containerize the Golang application using Docker. You can use the Dockerfile provided in the repository:
 perl
 Copy code
+
 docker build -t my-app .
+
 Push the Docker image to a registry like Docker Hub or Google Container Registry:
 bash
 Copy code
+
 docker tag my-app <registry>/my-app:latest
 docker push <registry>/my-app:latest
+
 Deploy the Golang application as a Kubernetes deployment, with multiple replicas and a load balancer service to expose it to the outside world:
 Copy code
+
 kubectl apply -f app.yaml
+
 Test the application by accessing the endpoint http://<load-balancer-ip>/:id, where <load-balancer-ip> is the external IP of the load balancer service. You should see the counter increment for each call.
