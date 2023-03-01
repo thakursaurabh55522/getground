@@ -39,7 +39,7 @@ Replace `<password>` with the actual Redis password you want to use.
 kubectl apply -f kubernetes/configmap.yaml
 ```
 * This will create two configMaps
-    1. `go-app-config` - have the redis confurations details (hostname, redis_port, redis_DB).
+    1. `go-app-config` - have the redis conffigurations details (hostname, redis_port, redis_DB).
     2. `redis-config`- have the _redis.config_ content.
 
 3. Create a persistent volume claim for redis, It will prevent **Data loss** incase of any failure.
@@ -53,8 +53,8 @@ kubectl apply -f kubernetes/pvc.yaml
 kubectl apply -f kubernetes/redis.yaml
 ```
 - The file will Deploy the below components:
-    * Deployment named `redis` with attached configMap **redis-config** which has the redis configuration to enable **password authentication**, Using the **command** argument the configurations are getting appended in `/usr/local/etc/redis/redis.conf` file
-    * Service named `redis-service` which will expose the deployemnt as **cluster_ip**, so that the frontend application could access redis **internally**. 
+    * **Deployment** named `redis` with attached configMap **redis-config** which has the redis configuration to enable **password authentication**, Using the **command** argument the configurations are getting appended in `/usr/local/etc/redis/redis.conf` file
+    * **Service** named `redis-service` which will expose the deployemnt as **cluster_ip**, so that the frontend application could access redis **internally**. 
 
 5. Build and containerize the Golang application using `Dockerfile`.
 
@@ -90,5 +90,9 @@ kubectl apply -f kubernetes/app.yaml
 ```
 minikube service go-app-service --url
 ```
-As we are using **Minikube** Kubernetes cluster, It will not show the external Ip of Load balancer service. Using the above command, we will get the external URL.
-Test the application by accessing the endpoint `<external-url>/:id`, where `<external-url>` is the URL we got by running the above command
+
+> NOTE: This Command will generate the external IP for the load balancer service. AS we are using **Minikube** Kubernetes cluster, We will not get the external Ip of Load balancer service using Kubectl get service command.
+
+Test the application by accessing the endpoint `<external-url>/:id`, where `<external-url>` is the URL we got by running the above command.
+
+
