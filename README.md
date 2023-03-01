@@ -91,4 +91,4 @@ kubectl apply -f kubernetes/app.yaml
 minikube service go-app-service --url
 ```
 As we are using **Minikube** Kubernetes cluster, It will not show the external Ip of Load balancer service. Using the above command, we will get the external URL.
-Test the application by accessing the endpoint <external-url>/:id, where <external-url> is the URL we got by running the above command
+Test the application by accessing the endpoint `<external-url>/:id`, where `<external-url>` is the URL we got by running the above command
