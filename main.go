@@ -45,7 +45,9 @@ func main() {
 		ctx := context.Background()
 		id := c.Param("id")
 		val, err := r.Get(ctx, id).Result()
+		fmt.Println(val)
 		if err != nil {
+			fmt.Println(err)
 			if err == redis.Nil {
 				c.JSON(http.StatusOK, Count{Value: 1})
 				if err := r.Set(ctx, id, 1, 0).Err(); err != nil {
@@ -65,14 +67,6 @@ func main() {
 			log.Println("failed to update cache")
 		}
 		return
-	})
-
-	router.GET("/ping", func(c *gin.Context) {
-		if _, err := r.Ping(context.Background()).Result(); err != nil {
-			c.Status(http.StatusInternalServerError)
-		} else {
-			c.Status(http.StatusOK)
-		}
 	})
 
 	_ = router.Run(fmt.Sprintf(":%d", c.Port))
