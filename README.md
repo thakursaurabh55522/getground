@@ -12,15 +12,15 @@ The proposed architecture consists of the following components:
 ## Tools Used
 
 The tools we will be using for this solution are:
-* **Docker**: to create container images for the Golang service and Redis
-* **Kubernetes**: to deploy the application and its dependencies
-* **kubectl**: to interact with the Kubernetes cluster from the command line
-* **Minikube**: to create a local Kubernetes cluster for development and testing purposes
+* **Docker**: to create container images for the Golang service and Redis.
+* **Kubernetes**: to deploy the application and its dependencies.
+* **kubectl**: to interact with the Kubernetes cluster from the command line.
+* **Minikube**: to create a local Kubernetes cluster.
 
 > NOTE: If tools are not setup then you can follow the **prerequisite_setup.md** file to setup the tools in the Ubunto VM.
 
 
- have a standalone fresh Ubuntu VM (As mentioned in the Usecase), So I am using the **Minikube** for Kubernetes Environment.
+We have a standalone fresh Ubuntu VM (As mentioned in the Usecase), So I am using the **Minikube** for Kubernetes Environment.
  
 ## Implementation:
 
@@ -47,16 +47,16 @@ kubectl apply -f kubernetes/configmap.yaml
 ```
 kubectl apply -f kubernetes/pvc.yaml
 ```
-4. Create a Redis deployment using the secret and and the Redis service:
+4. Deploy Password Protected Redis:
 
 ```
 kubectl apply -f kubernetes/redis.yaml
 ```
 - The file will Deploy the below components:
-    * **Deployment** named `redis` with attached configMap **redis-config** which has the redis configuration to enable **password authentication**, Using the **command** argument the configurations are getting appended in `/usr/local/etc/redis/redis.conf` file
-    * **Service** named `redis-service` which will expose the deployemnt as **cluster_ip**, so that the frontend application could access redis **internally**. 
+    * **Deployment** named _redis_ with attached configMap **redis-config** which has the redis configuration to enable **password authentication**, Using the **command** argument the configurations are getting appended in _/usr/local/etc/redis/redis.conf_ file
+    * **Service** named _redis-service_ which will expose the deployemnt as **cluster_ip**, so that the frontend application could access redis **internally**. 
 
-5. Build and containerize the Golang application using `Dockerfile`.
+5. Build and containerize the Golang application using _Dockerfile_.
 
 ```
 docker build -t my-app .
@@ -81,9 +81,9 @@ Replace `<registry>` with the actual docker registry where you want to push the 
 kubectl apply -f kubernetes/app.yaml
 ```
 * The file will Deploy the below components:
-    * **Deployment** named `go-app-deployment` with multiple replicas, image update strategy and attached configMap `go-app-config` data as ENV variables in the container. 
-    * **Service** named `go-app-service` which will expose the Goland deployment as **Load balancer**, So that it will be accessible from outside the cluster via HTTP.
-    * **Horizontal Pod Autoscaler** named `go-app-hpa` will monitor the CPU utilication(60%) and scale-up and scale-down the pods
+    * **Deployment** named _go-app-deployment_ with multiple replicas, image update strategy and attached configMap _go-app-config_ data as ENV variables in the container. 
+    * **Service** named _go-app-service_ which will expose the Goland deployment as **Load balancer**, So that it will be accessible from outside the cluster via HTTP.
+    * **Horizontal Pod Autoscaler** named _go-app-hpa_ will monitor the CPU utilication(60%) and scale-up and scale-down the pods
 
 8. Test the application
 
