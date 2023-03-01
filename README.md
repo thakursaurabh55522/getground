@@ -96,3 +96,5 @@ minikube service go-app-service --url
 Test the application by accessing the endpoint `<external-url>/:id`, where `<external-url>` is the URL we got by running the above command.
 
 
+***
+
