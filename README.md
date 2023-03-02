@@ -1,3 +1,5 @@
+> For beter experience please refer the link https://github.com/thakursaurabh55522/getground
+
 # Devops-techtask
 
 ## Architecture:
@@ -27,7 +29,7 @@ We have a standalone fresh Ubuntu VM (As mentioned in the Usecase), So I am usin
 ## Implementation:
 
 #### Here are the steps to implement the solution:
-> Make sure you are in the directory where files are extracted.
+> Make sure you are in the directory where the files are extracted.
 
 1. Create a Redis password and store it as a Kubernetes secret:
 
@@ -43,6 +45,8 @@ Replace `<password>` with the actual Redis password you want to use.
 
 > **NOTE**
 >  For now to execute we have to hardcode a password in `Kubernetes/configmap.yaml` file. Replace the `${REDIS_PASSWORD}` with `<password>` It should match with the password, you have given while creating the secret in the 1st step.
+> * `nano Kubernetes/configmap.yaml`
+>   replace ${REDIS_PASSWORD} with your password and save
 
 
 ```
@@ -93,6 +97,11 @@ docker push <registry>/my-app:latest
 ```
 
 Replace `<registry>` with the actual docker registry where you want to push the image.
+
+> If you dont have any repository the use the following command
+> `docker tag my-app bandit8888/my-app:latest`
+> `docker push bandit8888/my-app:latest`
+
 * Docker tag command will maintain the build version.
 * Docker push will push the taged image to the repository.
 
@@ -108,17 +117,22 @@ kubectl apply -f Kubernetes/app.yaml
     * **Service** named _go-app-service_ which will expose the Goland deployment as **Load balancer**, So that it will be accessible from outside the cluster via HTTP.
     * **Horizontal Pod Autoscaler** named _go-app-hpa_ will monitor the CPU utilication(70%) and scale-up and scale-down the pods
 
-8. Test the application
+8. Generate Load Balancer URL
 
 ```
 minikube service go-app-service --url
 
 ```
+> NOTE: This Command will generate the external-url for the load balancer service. 
 
-> NOTE: This Command will generate the external IP for the load balancer service. AS we are using **Minikube** Kubernetes cluster, We will not get the external Ip of Load balancer service using Kubectl get service command.
+9. Test the application
 
-Test the application by accessing the endpoint `<external-url>/:id`, where `<external-url>` is the URL we got by running the above command.
+Open new Terminal and run the below command
+```
+curl <external-url>/id
+```
 
+Replace the `<external-url>` with the URL you got in above step.
 
 
 ***
