@@ -106,7 +106,7 @@ kubectl apply -f Kubernetes/app.yaml
 * The file will Deploy the below components:
     * **Deployment** named _go-app-deployment_ with multiple replicas, image update strategy and attached configMap _go-app-config_ data as ENV variables in the container. 
     * **Service** named _go-app-service_ which will expose the Goland deployment as **Load balancer**, So that it will be accessible from outside the cluster via HTTP.
-    * **Horizontal Pod Autoscaler** named _go-app-hpa_ will monitor the CPU utilication(60%) and scale-up and scale-down the pods
+    * **Horizontal Pod Autoscaler** named _go-app-hpa_ will monitor the CPU utilication(70%) and scale-up and scale-down the pods
 
 8. Test the application
 
