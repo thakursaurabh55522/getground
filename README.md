@@ -38,12 +38,17 @@ Replace `<password>` with the actual Redis password you want to use.
 
 2. Create a ConfigMap containing the Redis configuration file:
 
+> #### ISSUE: In the `kubernetes/configmap.yaml` file **requiredpass** is ${REDIS_PASSWORD}. Idealy this redis.conf file should get deploy into the container and replace the ${REDIS_CONTAINER} with the environment variable which we are setting from secret in the deployment file. But unfortunately the variable is not getting substituted with the environment variable, I have tried multiple ways to do that but it is not working at all. I will be raising a support ticket for the same.
+
+> #### For now to execute we have to harcode a password in `kubernetes/configmap.yaml` file. Replace the ${REDIS_PASSWORD} with `<password>` which you have given while creating the secret.
+
 ```
 kubectl apply -f kubernetes/configmap.yaml
 ```
 * This will create two configMaps
     1. `go-app-config` - have the redis conffigurations details (hostname, redis_port, redis_DB).
-    2. `redis-config`- have the _redis.config_ content.
+    2. `redis-config`- have the _redis.conf_ content.
+
 
 3. Create a persistent volume claim for redis, It will prevent **Data loss** incase of any failure.
 
@@ -161,4 +166,4 @@ This command configures `kubectl` to use the cluster you created.
 
 ***
 
-## In addtition to this We can also setup the CI/CD process for the same.
+## In addtition to this I can also setup the CI/CD process for the same.

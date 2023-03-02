@@ -15,5 +15,5 @@ data:
   redis.conf: |-
     bind 0.0.0.0
     protected-mode yes
-    requirepass admin12345
+    requirepass ${REDIS_PASSWORD}
     appendonly yes
