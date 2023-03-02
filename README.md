@@ -43,6 +43,7 @@ Replace `<password>` with the actual Redis password you want to use.
 
 > **Note**
 > ##### For now to execute we have to hardcode a password in `kubernetes/configmap.yaml` file. Replace the `${REDIS_PASSWORD}` with `<password>` which you have given while creating the secret in the 1st step.
+>
 
 ```
 kubectl apply -f kubernetes/configmap.yaml
