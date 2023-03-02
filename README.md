@@ -51,7 +51,6 @@ Replace `<password>` with the actual Redis password you want to use.
 
 ```
 kubectl apply -f Kubernetes/configmap.yaml
-
 ```
 
 * This will create two configMaps
@@ -63,14 +62,12 @@ kubectl apply -f Kubernetes/configmap.yaml
 
 ```
 kubectl apply -f Kubernetes/pvc.yaml
-
 ```
 
 4. Deploy Password Protected Redis:
 
 ```
 kubectl apply -f Kubernetes/redis.yaml
-
 ```
 
 - The file will Deploy the below components:
@@ -81,7 +78,6 @@ kubectl apply -f Kubernetes/redis.yaml
 
 ```
 docker build -t my-app .
-
 ```
 
 * Dockerfile file is in two stages
@@ -93,7 +89,6 @@ docker build -t my-app .
 ```
 docker tag my-app <registry>/my-app:latest
 docker push <registry>/my-app:latest
-
 ```
 
 Replace `<registry>` with the actual docker registry where you want to push the image.
@@ -109,7 +104,6 @@ Replace `<registry>` with the actual docker registry where you want to push the 
 
 ```
 kubectl apply -f Kubernetes/app.yaml
-
 ```
 
 * The file will Deploy the below components:
@@ -121,7 +115,6 @@ kubectl apply -f Kubernetes/app.yaml
 
 ```
 minikube service go-app-service --url
-
 ```
 > NOTE: This Command will generate the external-url for the load balancer service. 
 
