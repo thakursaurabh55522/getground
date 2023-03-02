@@ -22,7 +22,6 @@ The tools we will be using for this solution are:
 ## Setup:
 > NOTE: If tools are not setup then you can follow the **prerequisite_setup.md** file to setup the tools in the Ubuntu VM.
 
-
 We have a standalone fresh Ubuntu VM (As mentioned in the Usecase), So I am using the **Minikube** for Kubernetes Environment.
  
 ## Implementation:
@@ -31,24 +30,26 @@ We have a standalone fresh Ubuntu VM (As mentioned in the Usecase), So I am usin
 > Make sure you are in the directory where files are extracted.
 
 1. Create a Redis password and store it as a Kubernetes secret:
+
 ```
 kubectl create secret generic redis-password --from-literal=REDIS_PASSWORD=<password>
 ```
+
 Replace `<password>` with the actual Redis password you want to use.
 
 2. Create a ConfigMap containing the Redis configuration file:
-
-:bangbang: | In the `Kubernetes/configmap.yaml` file on line 18 `requiredpass` is `${REDIS_PASSWORD}`. Idealy this _redis.conf_ file should get deploy into the container and replace the `${REDIS_CONTAINER}` with the environment variable which we are setting from secret in the deployment file. But unfortunately the variable is not getting substituted with the environment variable, I have tried a lot of ways to do that but it is not working at all. I will be raising a support ticket for the same.
-:---: | :---
 
 > ISSUE: In the `Kubernetes/configmap.yaml` file on line 18 `requiredpass` is `${REDIS_PASSWORD}`. Idealy this _redis.conf_ file should get deploy into the container and replace the `${REDIS_CONTAINER}` with the environment variable which we are setting from secret in the deployment file. But unfortunately the variable is not getting substituted with the environment variable, I have tried a lot of ways to do that but it is not working at all. I will be raising a support ticket for the same.
 
 > **NOTE**
 >  For now to execute we have to hardcode a password in `Kubernetes/configmap.yaml` file. Replace the `${REDIS_PASSWORD}` with `<password>` It should match with the password, you have given while creating the secret in the 1st step.
 
+
 ```
 kubectl apply -f Kubernetes/configmap.yaml
+
 ```
+
 * This will create two configMaps
     1. `go-app-config` - have the redis conffigurations details (hostname, redis_port, redis_DB).
     2. `redis-config`- have the _redis.conf_ content.
@@ -58,12 +59,16 @@ kubectl apply -f Kubernetes/configmap.yaml
 
 ```
 kubectl apply -f Kubernetes/pvc.yaml
+
 ```
+
 4. Deploy Password Protected Redis:
 
 ```
 kubectl apply -f Kubernetes/redis.yaml
+
 ```
+
 - The file will Deploy the below components:
     * **Deployment** named _redis_ with attached configMap **redis-config** which has the redis configuration to enable **password authentication**, Using the **command** argument the configurations are getting appended in _/usr/local/etc/redis/redis.conf_ file
     * **Service** named _redis-service_ which will expose the deployemnt as **cluster_ip**, so that the frontend application could access redis **internally**. 
@@ -72,7 +77,9 @@ kubectl apply -f Kubernetes/redis.yaml
 
 ```
 docker build -t my-app .
+
 ```
+
 * Dockerfile file is in two stages
     1. It will take the module files, download all the dependencies and build the binary 
     2. Copy the binary from the previous stage and run the binary
@@ -82,7 +89,9 @@ docker build -t my-app .
 ```
 docker tag my-app <registry>/my-app:latest
 docker push <registry>/my-app:latest
+
 ```
+
 Replace `<registry>` with the actual docker registry where you want to push the image.
 * Docker tag command will maintain the build version.
 * Docker push will push the taged image to the repository.
@@ -91,7 +100,9 @@ Replace `<registry>` with the actual docker registry where you want to push the 
 
 ```
 kubectl apply -f Kubernetes/app.yaml
+
 ```
+
 * The file will Deploy the below components:
     * **Deployment** named _go-app-deployment_ with multiple replicas, image update strategy and attached configMap _go-app-config_ data as ENV variables in the container. 
     * **Service** named _go-app-service_ which will expose the Goland deployment as **Load balancer**, So that it will be accessible from outside the cluster via HTTP.
@@ -101,6 +112,7 @@ kubectl apply -f Kubernetes/app.yaml
 
 ```
 minikube service go-app-service --url
+
 ```
 
 > NOTE: This Command will generate the external IP for the load balancer service. AS we are using **Minikube** Kubernetes cluster, We will not get the external Ip of Load balancer service using Kubectl get service command.
