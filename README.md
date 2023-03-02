@@ -44,7 +44,7 @@ Replace `<password>` with the actual Redis password you want to use.
 > ISSUE: In the `kubernetes/configmap.yaml` file on line 18 `requiredpass` is `${REDIS_PASSWORD}`. Idealy this _redis.conf_ file should get deploy into the container and replace the `${REDIS_CONTAINER}` with the environment variable which we are setting from secret in the deployment file. But unfortunately the variable is not getting substituted with the environment variable, I have tried a lot of ways to do that but it is not working at all. I will be raising a support ticket for the same.
 
 > **NOTE**
->  For now to execute we have to hardcode a password in `kubernetes/configmap.yaml` file. Replace the `${REDIS_PASSWORD}` with `<password>` which you have given while creating the secret in the 1st step.
+>  For now to execute we have to hardcode a password in `kubernetes/configmap.yaml` file. Replace the `${REDIS_PASSWORD}` with `<password>` It should match with the password, you have given while creating the secret in the 1st step.
 
 ```
 kubectl apply -f kubernetes/configmap.yaml
@@ -113,7 +113,7 @@ Test the application by accessing the endpoint `<external-url>/:id`, where `<ext
 
 ## Devops-techtask On Google kubernetes engine GKE
 
-#### We can also deploy this applications using GKE, Where The implementation will remain same
+#### We can also deploy this applications using GKE, Where we will setup a google kubernetes cluster and the implementation will remain almost same as above.
 
 ## Architecture:
 The proposed architecture will consists of the following components:
@@ -135,14 +135,14 @@ gcloud config set project <PROJECT_ID>
 Replace `PROJECT_ID` with your project ID.
 
 ### Authenticate with google cloud
-
->NOTE: You should have the IAM permissions to create kubernetes cluster
 ```
 gcloud auth login
 ```
 This will give you a link on which you can login you account and authenticate
 
 ### Create GKE cluster
+
+>NOTE: You should have the IAM permissions to create kubernetes cluster on your account.
 ```
 gcloud container clusters create-auto <CLUSTER_NAME> \
     --region=<COMPUTE_REGION> \
