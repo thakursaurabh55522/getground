@@ -28,9 +28,9 @@ We have a standalone fresh Ubuntu VM (As mentioned in the Usecase), So I am usin
 ## Implementation:
 
 #### Here are the steps to implement the solution:
+> Make sure you are in the directory where files are extracted.
 
 1. Create a Redis password and store it as a Kubernetes secret:
-
 ```
 kubectl create secret generic redis-password --from-literal=REDIS_PASSWORD=<password>
 ```
@@ -80,8 +80,8 @@ docker build -t my-app .
 6. Tag & Push the Docker image to a Docker registry:
 
 ```
-docker tag my-app <registry>/my-app:latest`
-docker push <registry>/my-app:latest`
+docker tag my-app <registry>/my-app:latest
+docker push <registry>/my-app:latest
 ```
 Replace `<registry>` with the actual docker registry where you want to push the image.
 * Docker tag command will maintain the build version.
