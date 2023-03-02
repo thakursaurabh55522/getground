@@ -20,7 +20,7 @@ The tools we will be using for this solution are:
 
 
 ## Setup:
-> NOTE: If tools are not setup then you can follow the **prerequisite_setup.md** file to setup the tools in the Ubunto VM.
+> NOTE: If tools are not setup then you can follow the **prerequisite_setup.md** file to setup the tools in the Ubuntu VM.
 
 
 We have a standalone fresh Ubuntu VM (As mentioned in the Usecase), So I am using the **Minikube** for Kubernetes Environment.
